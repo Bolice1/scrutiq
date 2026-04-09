@@ -114,9 +114,9 @@ export default function SettingsPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between bg-aurora-surface p-8 rounded-2xl border border-aurora-border shadow-sm gap-6">
         <div className="space-y-2">
-          <h1 className="text-4xl font-black text-aurora-dark tracking-tighter">Portal settings</h1>
+          <h1 className="text-4xl font-black text-aurora-dark tracking-tighter">Settings</h1>
           <p className="text-sm font-bold text-aurora-muted tracking-wide max-w-lg">
-            Manage your professional identity, technical preferences, and recruitment portal configuration.
+            Manage your profile, notification preferences, and account settings.
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -147,8 +147,8 @@ export default function SettingsPage() {
                    {profileData.fullName.charAt(0) || "U"}
                  </div>
                  <div>
-                    <h2 className="text-2xl font-black text-aurora-dark tracking-tight">Recruiter profile</h2>
-                    <p className="text-xs font-bold text-aurora-muted tracking-widest leading-none mt-1">Update your professional information</p>
+                    <h2 className="text-2xl font-black text-aurora-dark tracking-tight">Your profile</h2>
+                    <p className="text-xs font-bold text-aurora-muted tracking-widest leading-none mt-1">Update your name and company</p>
                  </div>
               </div>
 
@@ -162,7 +162,7 @@ export default function SettingsPage() {
                          value={profileData.fullName}
                          onChange={(e) => setProfileData({...profileData, fullName: e.target.value})}
                          className="form-input pl-12"
-                         placeholder="Technical Recruiter Name"
+                         placeholder="Your full name"
                          required
                        />
                     </div>
@@ -190,7 +190,7 @@ export default function SettingsPage() {
                          value={profileData.companyName}
                          onChange={(e) => setProfileData({...profileData, companyName: e.target.value})}
                          className="form-input pl-12"
-                         placeholder="Corporate Registry"
+                         placeholder="Your company"
                          required
                        />
                     </div>
@@ -205,14 +205,14 @@ export default function SettingsPage() {
                  </div>
                  <div>
                     <h2 className="text-xl font-black text-aurora-dark tracking-tight">Notifications</h2>
-                    <p className="text-[10px] font-bold text-aurora-muted tracking-widest uppercase mt-1">Preference calibration</p>
+                    <p className="text-[10px] font-bold text-aurora-muted tracking-widest uppercase mt-1">Choose what you get notified about</p>
                  </div>
               </div>
 
               <div className="space-y-4">
                  {[
-                   { label: "New candidate alerts", desc: "Get notified when a high-alignment dossier is uploaded." },
-                   { label: "Screening completions", desc: "Receive report once the Ai ranking protocol finishes." },
+                   { label: "New candidate alerts", desc: "Get notified when a new resume is uploaded." },
+                   { label: "Screening completions", desc: "Get notified when a screening finishes." },
                  ].map((opt, i) => (
                    <div key={i} className="flex items-center justify-between p-4 rounded-2xl hover:bg-aurora-bg transition-colors">
                       <div className="space-y-1">
@@ -242,7 +242,7 @@ export default function SettingsPage() {
                 <div>
                   <h3 className="text-sm font-black text-aurora-dark tracking-tight">Delete account</h3>
                   <p className="text-[10px] font-bold text-aurora-muted tracking-widest leading-relaxed max-w-sm mt-1">
-                    Once you delete your account, there is no going back. All candidate registries, job definitions, and screening history will be permanently wiped.
+                    Once you delete your account, there is no going back. All candidates, jobs, and screening results will be permanently deleted.
                   </p>
                 </div>
                 <button
@@ -278,7 +278,7 @@ export default function SettingsPage() {
               <div className="space-y-2">
                  <h3 className="text-lg font-black text-aurora-dark tracking-tight">Secure session</h3>
                  <p className="text-[10px] font-bold text-aurora-muted tracking-widest leading-relaxed">
-                   Your portal session is currently encrypted and verified against our cloud security registry.
+                   Your session is secure and encrypted.
                  </p>
               </div>
               <button 
@@ -314,7 +314,7 @@ export default function SettingsPage() {
               <div className="space-y-2">
                  <h3 className="text-base font-black tracking-tight">Activity trail</h3>
                  <p className="text-[10px] font-bold text-aurora-muted/80 tracking-widest leading-relaxed">
-                   Monitor all administrative actions taken by your account.
+                   See all actions taken on your account.
                  </p>
               </div>
               <button 

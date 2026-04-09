@@ -55,7 +55,7 @@ const CandidateDetailModal = ({
                   <div className="flex items-center gap-2 mt-1">
                     <span className="px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center gap-1.5">
                       <ShieldCheck className="size-3" />
-                      Verified Profile
+                      Screened
                     </span>
                     <span className="text-[10px] font-bold text-aurora-muted uppercase tracking-widest px-2.5 py-1 bg-white border border-aurora-border rounded-lg">
                       ID: {result.candidateId}
@@ -77,7 +77,7 @@ const CandidateDetailModal = ({
                   <div className="flex items-center gap-2 text-aurora-muted">
                     <BarChart className="size-4" />
                     <span className="text-[10px] font-black uppercase tracking-widest text-aurora-muted">
-                      Alignment Matrix
+                      Match Score
                     </span>
                   </div>
                   <p className="text-2xl font-black text-aurora-blue">
@@ -102,7 +102,7 @@ const CandidateDetailModal = ({
                 <div className="flex items-center gap-2">
                   <FileText className="size-4 text-aurora-blue" />
                   <h3 className="text-sm font-black text-aurora-dark uppercase tracking-tight">
-                    Technical Summary
+                    Summary
                   </h3>
                 </div>
                 <div className="bg-white border border-aurora-border/50 p-6 rounded-2xl">
@@ -116,7 +116,7 @@ const CandidateDetailModal = ({
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="size-4 text-emerald-500" />
                   <h3 className="text-sm font-black text-aurora-dark uppercase tracking-tight">
-                    Verified Competencies
+                    Key Strengths
                   </h3>
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -139,10 +139,10 @@ const CandidateDetailModal = ({
 
             <div className="p-8 border-t border-aurora-border/50 bg-aurora-bg/30 flex justify-end gap-4">
               <button onClick={onClose} className="btn-secondary">
-                Close Protocol
+                Close
               </button>
               <button className="btn-primary shadow-lg shadow-aurora-blue/20">
-                Finalize Alignment
+                Done
               </button>
             </div>
           </motion.div>

@@ -27,7 +27,7 @@ const ActivityFeed = () => {
         id: i,
         type: act.type.toLowerCase(),
         message: act.message,
-        target: "System Protocol Active",
+        target: "System Active",
         time: act.time,
         icon:
           act.type === "INGESTION"
@@ -121,7 +121,7 @@ const ActivityFeed = () => {
         ))}
       </div>
       <button className="w-full py-4 text-[9px] font-black text-aurora-muted hover:text-aurora-blue uppercase tracking-widest border-t border-aurora-border/50 hover:bg-aurora-bg transition-all">
-        Access Full Protocol Logs
+        View All Activity
       </button>
     </div>
   );

@@ -71,7 +71,7 @@ export default function AnalyticsPage() {
 
   const metricCards = [
     { 
-      label: "Ai screening accuracy", 
+      label: "Screening accuracy", 
       value: `${Math.round(stats?.matchSuccessRate || 0)}%`, 
       change: "+0.4%", 
       isUp: true, 
@@ -178,7 +178,7 @@ export default function AnalyticsPage() {
             <div className="space-y-1">
               <h2 className="text-2xl font-black text-aurora-dark tracking-tight">Active performance</h2>
               <p className="text-xs font-bold text-aurora-muted tracking-widest leading-relaxed">
-                Visualizing weekly Ai screening volume and quality metrics
+                Visualizing weekly screening volume and quality metrics
               </p>
             </div>
             <div className="flex p-1 bg-aurora-bg border border-aurora-border rounded-xl">

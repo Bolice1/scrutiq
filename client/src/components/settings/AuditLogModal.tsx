@@ -115,7 +115,7 @@ export default function AuditLogModal({ userId, isOpen, onClose }: AuditLogModal
 
             <div className="p-6 bg-aurora-bg/30 border-t border-aurora-border flex items-center justify-between">
                <p className="text-[9px] font-bold text-aurora-muted max-w-[340px] uppercase tracking-wider">
-                 These logs assist in providing a tamper-proof record of all administrative interactions within the HireIQ platform.
+                 These logs assist in providing a tamper-proof record of all administrative interactions within the Scrutiq platform.
                </p>
                <button onClick={onClose} className="btn-secondary px-6">Close</button>
             </div>

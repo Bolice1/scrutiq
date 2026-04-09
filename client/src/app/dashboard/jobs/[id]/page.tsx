@@ -195,7 +195,7 @@ export default function JobDetailPage() {
           onClick={() => setActiveTab("rankings")}
           className={`px-8 py-4 text-xs font-bold tracking-widest transition-all border-b-2 ${activeTab === "rankings" ? "border-aurora-blue text-aurora-blue" : "border-transparent text-aurora-muted hover:text-aurora-dark"}`}
         >
-          Applicants & Ai rankings
+          Applicants & Rankings
         </button>
       </div>
 
@@ -258,8 +258,8 @@ export default function JobDetailPage() {
                     No applicants ai screened yet
                   </h3>
                   <p className="text-xs text-aurora-muted font-bold max-w-sm mx-auto leading-relaxed">
-                    Upload resumes on the applicants page and run an ai screening
-                    protocol to see rankings here.
+                    Upload resumes on the applicants page and run a screening
+                    to see rankings here.
                   </p>
                 </div>
               </div>
@@ -396,7 +396,7 @@ export default function JobDetailPage() {
                       <div className="bg-aurora-bg p-4 rounded-xl border border-aurora-border/50">
                         <span className="text-[9px] font-black uppercase text-aurora-muted mb-1 block flex gap-1 items-center">
                           <ShieldCheck className="size-3 text-aurora-blue" />{" "}
-                          Gemini AI Analysis
+                          Analysis
                         </span>
                         <p className="text-xs text-aurora-dark font-medium leading-relaxed">
                           {rank.reasoning}

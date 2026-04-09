@@ -39,7 +39,7 @@ const DashboardPage = () => {
 
   const metaStats = [
     {
-      label: "Ai screenings",
+      label: "Screenings",
       value: stats?.assessments || 0,
       icon: ShieldCheck,
       color: "blue",
@@ -97,7 +97,7 @@ const DashboardPage = () => {
             className="btn-primary flex items-center gap-2 px-6 shadow-lg shadow-aurora-blue/20 group"
           >
             <ShieldCheck className="size-4 group-hover:scale-110 transition-transform" />
-            <span>Start AI Screening</span>
+            <span>Start Screening</span>
           </Link>
         </div>
       </div>
@@ -166,10 +166,10 @@ const DashboardPage = () => {
                     Final step
                   </p>
                   <h4 className="text-sm font-black text-aurora-dark tracking-tight mb-2">
-                    Ai screening
+                    Screening
                   </h4>
                   <p className="text-[10px] font-bold text-aurora-muted tracking-widest leading-relaxed">
-                    Run the ai to instantly rank your top applicants.
+                    Run the screening to instantly rank your top applicants.
                   </p>
                 </Link>
               </div>

@@ -55,7 +55,7 @@ const LoginPage = () => {
           </div>
           <div>
             <h1 className="text-4xl font-black text-aurora-dark tracking-tighter leading-none">
-              Aurora
+              Scrutiq
             </h1>
             <p className="text-[10px] font-bold text-aurora-muted tracking-widest mt-2">
               Sign in to your recruiter portal

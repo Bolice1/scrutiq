@@ -103,7 +103,7 @@ const RegisterPage = () => {
             </h1>
             <p className="text-[10px] font-bold text-aurora-muted tracking-widest mt-2 px-10">
               {step === "register" 
-                ? "Join Aurora to start screening your technical talent" 
+                ? "Join Scrutiq to start screening your technical talent" 
                 : `Enter the 6-digit activation code sent to ${formData.email}`}
             </p>
           </div>
@@ -127,7 +127,7 @@ const RegisterPage = () => {
                     <input 
                       type="text"
                       required
-                      placeholder="John Doe"
+                      placeholder="Full name ..."
                       value={formData.fullName}
                       onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                       className="w-full bg-aurora-bg border border-aurora-border rounded-xl pl-11 pr-4 py-3.5 text-xs font-bold text-aurora-dark outline-none focus:border-aurora-blue focus:ring-4 focus:ring-aurora-blue/5 transition-all tracking-wider"

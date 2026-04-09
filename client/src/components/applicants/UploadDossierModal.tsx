@@ -114,7 +114,7 @@ const UploadDossierModal = ({
                     Upload New Resumes
                   </h2>
                   <p className="text-[10px] font-bold text-aurora-muted uppercase tracking-widest leading-none mt-1">
-                    Add multiple candidate profiles to your registry
+                    Add candidate resumes to your account
                   </p>
                 </div>
               </div>

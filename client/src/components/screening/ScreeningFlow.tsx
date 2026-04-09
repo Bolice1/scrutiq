@@ -67,7 +67,7 @@ const ScreeningFlow = () => {
     setStep(3);
     setIsProcessing(true);
     setProgress(0);
-    setStatusMessage("Extracting CV texts...");
+    setStatusMessage("Reading resumes...");
 
     const estimatedTimeMs = Math.max(10000, selectedCandidates.length * 3500);
     const intervalTime = 100;
@@ -76,10 +76,10 @@ const ScreeningFlow = () => {
     let currentProgress = 0;
     const progressInterval = setInterval(() => {
       currentProgress += progressIncrement;
-      if (currentProgress < 30) setStatusMessage("Constructing requirement matrix...");
-      else if (currentProgress < 60) setStatusMessage("Running Gemini structural analysis...");
-      else if (currentProgress < 85) setStatusMessage("Scoring granular alignment...");
-      else setStatusMessage("Finalizing recommendations...");
+      if (currentProgress < 30) setStatusMessage("Preparing job criteria...");
+      else if (currentProgress < 60) setStatusMessage("Comparing resumes to job requirements...");
+      else if (currentProgress < 85) setStatusMessage("Calculating scores...");
+      else setStatusMessage("Wrapping up...");
       
       setProgress(Math.min(95, currentProgress));
     }, intervalTime);
@@ -117,7 +117,7 @@ const ScreeningFlow = () => {
   const steps = [
     { n: 1, label: "Choose Job" },
     { n: 2, label: "Choose Candidates" },
-    { n: 3, label: "AI Screening" },
+    { n: 3, label: "Screening" },
     { n: 4, label: "Results" },
   ];
 
@@ -126,7 +126,7 @@ const ScreeningFlow = () => {
       <div className="py-24 flex flex-col items-center justify-center space-y-4">
         <RefreshCcw className="size-10 text-aurora-blue animate-spin" />
         <p className="text-xs font-black text-aurora-muted uppercase tracking-widest">
-          Loading Database...
+          Loading...
         </p>
       </div>
     );
@@ -138,10 +138,10 @@ const ScreeningFlow = () => {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-aurora-border/50 mb-8">
           <div className="space-y-1">
             <h1 className="text-3xl font-black text-aurora-dark tracking-tighter uppercase">
-              AI Screening
+              Screening
             </h1>
             <p className="text-xs font-bold text-aurora-muted uppercase tracking-widest leading-none">
-              Evaluate candidates against your job requirements
+              Compare candidates to your job requirements
             </p>
           </div>
           <div className="flex items-center gap-4 bg-aurora-bg p-2 rounded-2xl border border-aurora-border/50">
@@ -353,7 +353,7 @@ const ScreeningFlow = () => {
               <div className="text-center space-y-4 w-full max-w-md">
                 <div className="space-y-1">
                   <h2 className="text-xl font-black text-aurora-dark uppercase tracking-widest">
-                    AI SCREENING IN PROGRESS
+                    SCREENING IN PROGRESS
                   </h2>
                   <p className="text-[10px] font-black text-aurora-blue uppercase tracking-widest animate-pulse h-4">
                     {statusMessage}
@@ -391,7 +391,7 @@ const ScreeningFlow = () => {
                     Screening Results
                   </h2>
                   <p className="text-[10px] font-bold text-aurora-muted uppercase tracking-widest leading-none">
-                    AI Analysis and Recommendations
+                    Scores and recommendations
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
@@ -402,7 +402,7 @@ const ScreeningFlow = () => {
                     className="btn-primary flex items-center gap-2 group shadow-lg shadow-aurora-blue/20"
                   >
                     <Briefcase className="size-4 group-hover:scale-110 transition-transform" />
-                    <span>Go to Job Registry</span>
+                    <span>View Job Details</span>
                   </button>
                   <button
                     onClick={() => setStep(1)}

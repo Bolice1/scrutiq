@@ -38,7 +38,7 @@ const Sidebar = ({ onClose }: SidebarProps) => {
     { name: "Jobs", href: "/dashboard/jobs", icon: Briefcase },
     { name: "Applicants", href: "/dashboard/applicants", icon: Users },
     {
-      name: "Ai screening",
+      name: "Screening",
       href: "/dashboard/screenings",
       icon: ShieldCheck,
     },
@@ -54,15 +54,13 @@ const Sidebar = ({ onClose }: SidebarProps) => {
           className="flex items-center gap-3 group"
           onClick={onClose}
         >
-          <div className="size-10 bg-aurora-blue rounded-xl flex items-center justify-center shadow-lg shadow-aurora-blue/20 group-hover:rotate-6 transition-all duration-500">
-            <span className="text-white font-black text-xl">A</span>
-          </div>
+          <img src="/Untitled_design-removebg-preview.svg" alt="Scrutiq" className="size-10 group-hover:rotate-6 transition-all duration-500" />
           <div>
             <h1 className="text-xl font-black text-aurora-dark tracking-tighter leading-none group-hover:text-aurora-blue transition-colors">
-              HireIQ
+              Scrutiq
             </h1>
             <span className="text-[11px] font-bold text-aurora-muted tracking-widest">
-              Technical portal
+              Recruitment portal
             </span>
           </div>
         </Link>
@@ -115,7 +113,7 @@ const Sidebar = ({ onClose }: SidebarProps) => {
           <div className="space-y-1 relative z-10">
             <div className="flex items-center gap-2">
               <span className="text-xs font-black text-aurora-dark tracking-tight">
-                Technical registry
+                All systems
               </span>
             </div>
             <div className="flex items-center justify-between">

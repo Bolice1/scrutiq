@@ -33,7 +33,7 @@ export default function ContactModal({ applicant, isOpen, onClose }: ContactModa
           `Best regards,\nThe Hiring Team`
         );
       } else {
-        setSubject(`Next steps: Technical Interview with HireIQ`);
+        setSubject(`Next steps: Technical Interview with Scrutiq`);
         setMessage(`Hello ${applicant.name || 'there'},\n\nWe found your technical profile to be a strong alignment with our requirements. We would like to schedule a formal discussion regarding your experience.`);
       }
     }
@@ -48,10 +48,10 @@ export default function ContactModal({ applicant, isOpen, onClose }: ContactModa
     setIsSending(true);
     try {
       await api.post(`/applicants/${applicant._id}/email`, { subject, message, recipientEmail: customEmail });
-      toast.success("Outreach message dispatched successfully.");
+      toast.success("Email sent successfully.");
       onClose();
     } catch (error) {
-      toast.error("Failed to dispatch email. Please check your SMTP configuration.");
+      toast.error("Failed to send email. Check your email settings.");
     } finally {
       setIsSending(false);
     }
@@ -81,8 +81,8 @@ export default function ContactModal({ applicant, isOpen, onClose }: ContactModa
                   <Mail className="size-6" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-black text-aurora-dark tracking-tight">Direct outreach</h2>
-                  <p className="text-[10px] font-bold text-aurora-muted tracking-widest uppercase">Contacting {applicant?.name}</p>
+                  <h2 className="text-xl font-black text-aurora-dark tracking-tight">Send Email</h2>
+                  <p className="text-[10px] font-bold text-aurora-muted tracking-widest uppercase">To {applicant?.name}</p>
                 </div>
               </div>
               <button 
@@ -131,7 +131,7 @@ export default function ContactModal({ applicant, isOpen, onClose }: ContactModa
 
               <div className="flex items-center justify-between pt-4">
                  <p className="text-[10px] font-bold text-aurora-muted tracking-wide max-w-[240px]">
-                   This email will be formatted with the premium HireIQ design protocol.
+                   This email will be sent using your configured email settings.
                  </p>
                  <div className="flex gap-3">
                    <button 

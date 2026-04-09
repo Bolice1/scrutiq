@@ -131,7 +131,7 @@ const ApplicantsPage = () => {
             Applicants
           </h1>
           <p className="text-xs font-bold text-aurora-muted tracking-widest">
-            Manage your candidate registry and resumes
+            Manage your candidates and resumes
           </p>
         </div>
         <div className="flex items-center gap-4">
@@ -155,11 +155,11 @@ const ApplicantsPage = () => {
       <div className="admin-card p-6 bg-aurora-surface relative overflow-hidden group">
         <div className="relative z-10 space-y-2">
           <h2 className="text-xl font-black text-aurora-dark tracking-tight">
-            Registry guide
+            Quick guide
           </h2>
           <p className="text-xs font-bold text-aurora-muted tracking-widest leading-relaxed max-w-2xl">
-            This registry contains all technical talent uploaded to your portal. You can search by name, 
-            sort alphabetically, or view detailed resumes. Screened applicants can be contacted directly via email.
+            This page lists all candidates you've uploaded. You can search by name, 
+            sort alphabetically, or view their resumes. Once screened, you can email them directly.
           </p>
         </div>
       </div>
@@ -199,7 +199,7 @@ const ApplicantsPage = () => {
               <tr className="bg-aurora-bg text-[10px] font-bold text-aurora-muted tracking-widest border-b border-aurora-border/50">
                 <th className="px-6 py-5">Applicant</th>
                 <th className="px-6 py-5">Experience</th>
-                <th className="px-6 py-5">Ai status</th>
+                <th className="px-6 py-5">Status</th>
                 <th className="px-6 py-5 text-right">Actions</th>
               </tr>
             </thead>
@@ -219,7 +219,7 @@ const ApplicantsPage = () => {
                           {app.name.split(' ').map((w: string) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ')}
                         </p>
                         <p className="text-[10px] font-bold text-aurora-muted tracking-widest leading-none">
-                          {app.email || "technical-registry"}
+                          {app.email || "No email"}
                         </p>
                       </div>
                     </div>
@@ -256,7 +256,7 @@ const ApplicantsPage = () => {
                             ? "text-aurora-muted hover:text-aurora-blue hover:bg-white border-transparent hover:border-aurora-border"
                             : "text-aurora-muted/30 border-transparent cursor-not-allowed"
                         }`}
-                        title={app.isScreened ? "Send outreach email" : "Applicant must be scanned first"}
+                        title={app.isScreened ? "Send email" : "Screen this applicant first"}
                       >
                         <Mail className="size-4" />
                       </button>
