@@ -10,6 +10,8 @@ export interface IScreening extends Document {
   gaps: string[];
   finalRecommendation: "Priority Alignment" | "Technical Fit" | "Potential Fit" | "No Alignment";
   reasoning: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const ScreeningSchema: Schema = new Schema(

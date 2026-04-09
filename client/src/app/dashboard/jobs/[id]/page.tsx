@@ -12,6 +12,7 @@ import {
   Trash2,
   Mail,
   FileText,
+  Eye,
 } from "lucide-react";
 import api from "@/lib/api";
 import { useNotifications } from "@/context/NotificationContext";
@@ -348,16 +349,16 @@ export default function JobDetailPage() {
                                   name: rank.candidateName,
                                   email: rank.candidateEmail,
                                   role: job.title,
-                                  resuméText:
-                                    rank.candidateResume || rank.microSummary,
+                                  resuméText: rank.microSummary,
+                                  resumeUrl: rank.candidateResume,
                                   id: rank.candidateId,
                                 });
                                 setIsResumeOpen(true);
                               }}
                               className="p-1.5 text-aurora-muted hover:text-aurora-blue hover:bg-aurora-blue/5 rounded-lg transition-all border border-transparent hover:border-aurora-blue/10"
-                              title="Preview Profile"
+                              title="Preview CV"
                             >
-                              <FileText className="size-3.5" />
+                              <Eye className="size-3.5" />
                             </button>
                             <button
                               onClick={() => {

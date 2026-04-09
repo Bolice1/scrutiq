@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Plus,
   X,
@@ -66,7 +66,7 @@ const CreateJobModal = ({
   });
 
   // Re-sync form when jobToEdit changes
-  useState(() => {
+  useEffect(() => {
     if (jobToEdit) {
       reset({
         title: jobToEdit.title,
@@ -74,8 +74,15 @@ const CreateJobModal = ({
         location: jobToEdit.location,
         description: jobToEdit.description,
       });
+    } else {
+      reset({
+        title: "",
+        department: "",
+        location: "",
+        description: "",
+      });
     }
-  });
+  }, [jobToEdit, reset]);
 
   const onSubmit = async (data: JobFormValues) => {
     setIsSubmitting(true);

@@ -11,8 +11,8 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "HireIQ | Technical Recruitment Portal",
-  description: "Modern administrative portal for technical talent assessment and recruitment.",
+  title: "Scrutiq | Advanced Talent Analysis Portal",
+  description: "Modern administrative portal for technical talent assessment and high-fidelity screening.",
 };
 
 export default function RootLayout({

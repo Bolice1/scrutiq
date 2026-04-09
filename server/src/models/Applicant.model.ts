@@ -9,8 +9,11 @@ export interface IApplicant extends Document {
   email: string;
   technicalProfile: string;
   resuméText?: string;
+  resumeUrl?: string;
   profileStatus: "Verified" | "Pending" | "Archived";
   ownerId: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const ApplicantSchema: Schema = new Schema(
@@ -23,6 +26,7 @@ const ApplicantSchema: Schema = new Schema(
     email: { type: String, required: true },
     technicalProfile: { type: String, required: true },
     resuméText: { type: String },
+    resumeUrl: { type: String },
     profileStatus: { type: String, enum: ["Verified", "Pending", "Archived"], default: "Pending" },
     ownerId: { type: String, required: true },
   },

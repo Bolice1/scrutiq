@@ -16,7 +16,7 @@ class GeminiService {
     });
   }
 
-  private async executeWithRetry(
+  public async executeWithRetry(
     prompt: string,
     attempt: number = 1,
   ): Promise<any> {
@@ -96,14 +96,14 @@ class GeminiService {
       For EACH candidate, return this JSON object:
       {
         "candidateId": "string (MUST MATCH THE ID PROVIDED)",
-        "candidateName": "string",
-        "candidateEmail": "string",
-        "microSummary": "string (20 words max)",
+        "candidateName": "string (Extract their ACTUAL REAL NAME from the CV text. DO NOT use the placeholder name provided above if the real name is found.)",
+        "candidateEmail": "string (Extract their ACTUAL EMAIL from the CV text.)",
+        "microSummary": "string (20 words max technical summary of their specific experience)",
         "matchScore": number (Calculate strict total 0-100),
         "strengths": ["string"],
         "gaps": ["string"],
         "finalRecommendation": "Priority Alignment" | "Technical Fit" | "Potential Fit" | "No Alignment",
-        "reasoning": "Only the 2-3 sentence summary explaining the score and key gaps. DO NOT output the word 'SUMMARY:', 'SCORE:', or detailed point breakdowns here. Just pure paragraph text."
+        "reasoning": "A 2-3 sentence summary explaining the score and key gaps. Just pure paragraph text."
       }
       
       Make sure to format the 'reasoning' field EXACTLY like the string template above, filling in the actual numbers and summary text. Use \\n for line breaks in the string.

@@ -12,6 +12,7 @@ import {
   BarChart3,
   Activity,
   X,
+  Bot,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -41,6 +42,11 @@ const Sidebar = ({ onClose }: SidebarProps) => {
       name: "Screening",
       href: "/dashboard/screenings",
       icon: ShieldCheck,
+    },
+    {
+      name: "Chat Bot",
+      href: "/dashboard/chat",
+      icon: Bot,
     },
     { name: "System analytics", href: "/dashboard/analytics", icon: BarChart3 },
     { name: "Settings", href: "/dashboard/settings", icon: Settings },

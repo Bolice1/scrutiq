@@ -76,7 +76,10 @@ const JobsPage = () => {
           </p>
         </div>
         <button
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => {
+            setEditingJob(null);
+            setIsModalOpen(true);
+          }}
           className="btn-primary flex items-center gap-2 px-6 shadow-lg shadow-aurora-blue/20 transition-all hover:-translate-y-0.5"
         >
           <Plus className="size-4" />

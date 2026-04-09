@@ -110,7 +110,7 @@ const JobCard = ({ job, index, onRefresh, onEdit, viewMode = "grid" }: JobCardPr
 
   if (viewMode === "list") {
     return (
-      <div className="admin-card group hover:border-aurora-blue transition-all cursor-default flex items-center p-4 gap-6">
+      <div className="admin-card !overflow-visible group hover:border-aurora-blue transition-all cursor-default flex items-center p-4 gap-6">
         <div className="size-10 rounded-xl bg-aurora-blue/5 border border-aurora-blue/10 flex items-center justify-center group-hover:bg-aurora-blue transition-all shrink-0">
           <Briefcase className="size-5 text-aurora-blue group-hover:text-white transition-colors" />
         </div>
@@ -180,7 +180,7 @@ const JobCard = ({ job, index, onRefresh, onEdit, viewMode = "grid" }: JobCardPr
   }
 
   return (
-    <div className="admin-card group hover:border-aurora-blue transition-all cursor-default relative">
+    <div className="admin-card !overflow-visible group hover:border-aurora-blue transition-all cursor-default relative">
       <div className="p-6 space-y-5">
         <div className="flex items-start justify-between">
           <div className="size-12 rounded-xl bg-aurora-blue/5 border border-aurora-blue/10 flex items-center justify-center group-hover:bg-aurora-blue transition-all">

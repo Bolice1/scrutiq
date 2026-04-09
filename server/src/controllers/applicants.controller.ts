@@ -23,26 +23,35 @@ class ApplicantsController {
   async upload(req: Request, res: Response) {
     try {
       const files = req.files as Express.Multer.File[];
+      const urls = req.body.urls ? (Array.isArray(req.body.urls) ? req.body.urls : [req.body.urls]) : [];
       const ownerId = (req.headers["x-owner-id"] as string) || "global";
-      if (!files || files.length === 0) {
+      const emails = req.body.emails;
+
+      if ((!files || files.length === 0) && urls.length === 0) {
         return res.status(400).json({
           status: "fault",
-          message: "No resumes provided for upload.",
+          message: "No documents or links provided for ingestion.",
         });
       }
 
-      const emails = req.body.emails;
-      const results = await applicantsService.ingestFromFilesWithOwner(
-        files,
-        ownerId,
-        emails,
-      );
+      console.log(`[TECHNICAL INGESTION] Multi-source ingestion started. Files: ${files?.length || 0}, Links: ${urls.length}`);
+
+      // Execute both ingestion protocols in parallel for maximum performance
+      const [fileResults, urlResults] = await Promise.all([
+        files && files.length > 0 ? applicantsService.ingestFromFilesWithOwner(files, ownerId, emails) : Promise.resolve([]),
+        urls.length > 0 ? applicantsService.ingestFromUrls(urls, ownerId) : Promise.resolve([])
+      ]);
+
+      const totalResults = [...fileResults, ...urlResults];
+
       return res.status(201).json({
         status: "success",
-        message: `${results.length} candidate profiles successfully uploaded.`,
-        data: results,
+        message: `${totalResults.length} technical profiles successfully ingested into the registry.`,
+        protocol: "HYBRID_INGESTION_v2",
+        data: totalResults,
       });
     } catch (error: any) {
+      console.error("[INGESTION FAULT] System failure during hybrid ingestion:", error);
       return res.status(500).json({ status: "fault", message: error.message });
     }
   }

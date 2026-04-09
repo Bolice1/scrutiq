@@ -47,8 +47,16 @@ class AuthController {
       }
 
       const existingUser = await authService.findUserByEmail(email);
+      
       if (existingUser) {
-        return res.status(400).json({ status: "fault", message: "This email is already registered." });
+        if (existingUser.isVerified) {
+          return res.status(400).json({ status: "fault", message: "This email is already registered and verified." });
+        } else {
+          // If unverified, we delete the stale account to allow fresh registration
+          console.log(`[AUTH] Removing unverified account for ${email} to allow re-registration.`);
+          const User = (await import("../models/User.model")).default;
+          await User.findByIdAndDelete(existingUser._id);
+        }
       }
 
       const newUser = await authService.createUser({
@@ -58,10 +66,18 @@ class AuthController {
         companyName
       });
 
-      // Non-blocking email dispatch
-      emailService.sendVerificationCode(newUser.email, newUser.verificationCode!).catch(e => {
-        console.error("Delayed Email Fault:", e);
-      });
+      // BLOCKING Email Dispatch: If this fails, the account creation is rolled back
+      try {
+        await emailService.sendVerificationCode(newUser.email, newUser.verificationCode!);
+      } catch (emailError: any) {
+        console.error("[AUTH] Email Dispatch Failed. Rolling back account creation...", emailError);
+        const User = (await import("../models/User.model")).default;
+        await User.findByIdAndDelete(newUser._id);
+        return res.status(500).json({ 
+          status: "fault", 
+          message: `Technical Fault: Could not dispatch activation code. Registration aborted. Error: ${emailError.message}` 
+        });
+      }
 
       return res.status(201).json({
         status: "success",

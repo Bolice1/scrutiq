@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, FileText, User, MapPin, Mail, Briefcase } from "lucide-react";
+import { X, FileText, User, MapPin, Mail, Briefcase, ExternalLink } from "lucide-react";
 
 interface ResumeDrawerProps {
   candidate: any;
@@ -73,15 +73,39 @@ export default function ResumeDrawer({ candidate, isOpen, onClose }: ResumeDrawe
 
             {/* Resume Content */}
             <div className="flex-1 overflow-y-auto p-6 space-y-4">
-              <div className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-aurora-muted border-b border-aurora-border/50 pb-3">
-                <FileText className="size-4 text-aurora-blue" />
-                Resume / CV Text
+              <div className="flex items-center justify-between border-b border-aurora-border/50 pb-3">
+                <div className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-aurora-muted">
+                  <FileText className="size-4 text-aurora-blue" />
+                  {candidate.resumeUrl ? "Primary CV Document" : "Extracted CV Text"}
+                </div>
+                {candidate.resumeUrl && (
+                  <a 
+                    href={`${process.env.NEXT_PUBLIC_API_URL?.replace('/api', '')}/${candidate.resumeUrl}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 text-[10px] font-bold text-aurora-blue hover:underline"
+                  >
+                    <ExternalLink className="size-3" />
+                    Open in Full Screen
+                  </a>
+                )}
               </div>
-              <div className="bg-aurora-bg rounded-2xl border border-aurora-border/50 p-6">
-                <pre className="text-xs text-aurora-dark font-medium leading-relaxed whitespace-pre-wrap font-sans">
-                  {resumeText.trim()}
-                </pre>
-              </div>
+
+              {candidate.resumeUrl ? (
+                <div className="h-[600px] w-full rounded-2xl border border-aurora-border/50 overflow-hidden bg-aurora-bg">
+                  <iframe 
+                    src={`${process.env.NEXT_PUBLIC_API_URL?.replace('/api', '')}/${candidate.resumeUrl}#toolbar=0`}
+                    className="w-full h-full border-none"
+                    title="Resume Preview"
+                  />
+                </div>
+              ) : (
+                <div className="bg-aurora-bg rounded-2xl border border-aurora-border/50 p-6">
+                  <pre className="text-xs text-aurora-dark font-medium leading-relaxed whitespace-pre-wrap font-sans">
+                    {resumeText.trim()}
+                  </pre>
+                </div>
+              )}
             </div>
 
             {/* Footer */}
