@@ -12,14 +12,14 @@ class GeminiService {
     constructor() {
         const apiKey = process.env.GEMINI_API_KEY || "";
         this.genAI = new generative_ai_1.GoogleGenerativeAI(apiKey);
-        // Reverting to the confirmed authorized model gemini-3.1-flash-lite-preview
+        // Using gemini-flash-latest for production stability
         this.model = this.genAI.getGenerativeModel({
-            model: "gemini-3.1-flash-lite-preview",
+            model: "gemini-flash-latest",
         });
     }
     async executeWithRetry(prompt, attempt = 1) {
-        const models = ["gemini-3.1-flash-lite-preview", "gemini-2.0-flash"];
-        const modelToUse = attempt > 3 ? models[1] : models[0];
+        const models = ["gemini-flash-latest", "gemini-3.1-flash-lite-preview"];
+        const modelToUse = attempt > 2 ? models[1] : models[0];
         const activeModel = this.genAI.getGenerativeModel({ model: modelToUse });
         try {
             const result = await activeModel.generateContent(prompt);
@@ -44,40 +44,67 @@ class GeminiService {
      */
     async screenCandidates(jobData, candidates) {
         const prompt = `
-      TECHNICAL SCREENING PROTOCOL - RECRUITER ASSISTANT
+      You are a strict HR screening assistant.
       
-      JOB REQUIREMENT MATRIX:
+      You will score each candidate CV from 0 to 100 based on how well they match the job description using this exact rubric:
+      
+      1. RELEVANT EXPERIENCE (30pts)
+         - Years of experience match/exceed requirement = 25-30pts
+         - Slightly under or partially relevant = 12-20pts
+         - Little to no relevant experience = 0-10pts
+      2. PROOF OF RESULTS (25pts)
+         - Quantified achievements = 20-25pts
+         - Some results but vague = 8-15pts
+         - No measurable results = 0pts
+      3. SKILLS MATCH (25pts)
+         - 90-100% of skills matched = 25pts
+         - 50-89% matched = 10-20pts
+         - Below 50% = 0-8pts
+      4. PROFESSIONALISM & CLARITY (10pts)
+         - Well-structured, specific = 10pts
+         - Vagueness/filler ("assisted") = 5pts
+         - Poorly written = 0-2pts
+      5. EXTRAS (10pts)
+         - Relevant certs, portfolio = 10pts
+         - Minor extras = 5pts
+         - Nothing extra = 0pts
+         
+      STRICT RULES:
+      - Do NOT assume missing info.
+      - Penalize vague language.
+      - "Available on request" = not provided.
+      - Only score what is written.
+      
+      JOB DESCRIPTION:
       Title: ${jobData.title}
       Description: ${jobData.description}
       Department: ${jobData.department}
       
-      CANDIDATE REGISTRY:
-      ${candidates
-            .map((c, i) => `
-        Candidate #${i + 1}:
-        ID: ${c._id?.toString() || c.id}
-        Name: ${c.name}
-        Profile Data: ${JSON.stringify(c)}
-      `)
-            .join("\n")}
+      CANDIDATES:
+      ${candidates.map((c, i) => `--- CANDIDATE #${i + 1} ---\nID: ${c._id?.toString() || c.id}\nName: ${c.name}\nCV TEXT:\n${c.resuméText || c.technicalProfile || "No readable CV data provided."}\n`).join("\n")}
       
       INSTRUCTION:
-      RETURN A STRUCTURED JSON ARRAY OF EVALUATIONS.
+      You MUST return a JSON array of evaluations.
       
-      FOR EACH CANDIDATE, EXTRACT AND RETURN:
-      - candidateId: string (MUST MATCH THE ID PROVIDED ABOVE)
-      - candidateName: string (Exact name from resume)
-      - candidateEmail: string (Exact email from resume)
-      - microSummary: string (A 20-word technical summary of experience)
-      - matchScore: number (0-100)
-      - strengths: string[]
-      - gaps: string[]
-      - finalRecommendation: "Priority Alignment" | "Technical Fit" | "Potential Fit" | "No Alignment"
-      - reasoning: string (brief justification)
+      For EACH candidate, return this JSON object:
+      {
+        "candidateId": "string (MUST MATCH THE ID PROVIDED)",
+        "candidateName": "string (Extract their ACTUAL REAL NAME from the CV text. DO NOT use the placeholder name provided above if the real name is found.)",
+        "candidateEmail": "string (Extract their ACTUAL EMAIL from the CV text. Emails are often hidden as links or after icons—search with all your might, but NEVER guess. If no valid email address is found, return 'No email available'.)",
+        "candidateGender": "string (Extract their GENDER as 'M', 'F', or 'Not stated'. Look for specific pronouns or declarations, but NEVER guess based on name alone. If unsure, return 'Not stated'.)",
+
+
+        "microSummary": "string (20 words max technical summary of their specific experience)",
+        "matchScore": number (Calculate strict total 0-100),
+
+        "strengths": ["string (High-level professional advantage)"],
+        "weaknesses": ["string (Specific technical or experience area to improve for future applications)"],
+        "finalRecommendation": "Priority Alignment" | "Technical Fit" | "Potential Fit" | "No Alignment",
+        "reasoning": "A 2-3 sentence summary explaining the score and key areas for improvement. Just pure paragraph text."
+      }
       
-      REQUIRED OUTPUT FORMAT:
-      A valid JSON array. Example: [{"candidateId": "...", "candidateName": "...", "candidateEmail": "...", "microSummary": "...", "matchScore": 85, ...}]
-      JSON ONLY. Do not include any other conversational text.
+      Make sure to format the 'reasoning' field EXACTLY like the string template above, filling in the actual numbers and summary text. Use \\n for line breaks in the string.
+      OUTPUT JSON ONLY. Do not use markdown blocks around the JSON.
     `;
         try {
             console.log(`[AI SERVICE] Initiating Gemini Screening Protocol for ${candidates.length} profiles...`);
@@ -100,10 +127,20 @@ class GeminiService {
         }
         catch (error) {
             console.error("[AI SERVICE FAULT]:", error.message || error);
-            if (error instanceof SyntaxError) {
-                throw new Error("The AI response could not be parsed as valid data. Retrying may help.");
+            const msg = error.message?.toLowerCase() || "";
+            if (msg.includes("limit") || msg.includes("quota")) {
+                throw new Error("Our AI partner is currently at full capacity for your account. Please wait a moment or upgrade your screening tokens.");
             }
-            throw new Error(error.message || "Failed to execute AI screening protocol.");
+            if (msg.includes("503") || msg.includes("overloaded") || msg.includes("demand")) {
+                throw new Error("The AI brain is experiencing high demand. We tried to retry for you, but it's still busy. Please try again in 1 minute.");
+            }
+            if (msg.includes("api key") || msg.includes("invalid")) {
+                throw new Error("Technical setup error: The AI brain key is missing or invalid. Please check your system configuration.");
+            }
+            if (error instanceof SyntaxError) {
+                throw new Error("The AI gave us a response we couldn't read correctly. This sometimes happens with complex resumes. Trying again usually fixes it!");
+            }
+            throw new Error("We encountered a small hiccup while talking to the AI. Please try running the screening one more time.");
         }
     }
 }

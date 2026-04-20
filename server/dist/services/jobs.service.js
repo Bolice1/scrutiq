@@ -39,6 +39,22 @@ class JobsService {
      * Adds a new technical requirement to the database.
      */
     async createJob(jobData) {
+        // Normalization logic to catch semantically identical titles (e.g., plurals)
+        const normalizeTitle = (title) => {
+            return title
+                .toLowerCase()
+                .trim()
+                .replace(/\s+/g, ' ') // Collapse multiple spaces
+                .replace(/s$/, '') // Remove simple plural 's'
+                .replace(/es$/, ''); // Remove 'es' plural
+        };
+        const targetNormalized = normalizeTitle(jobData.title);
+        // Fetch user's existing jobs to compare
+        const existingJobs = await Job_model_1.default.find({ ownerId: jobData.ownerId }).select('title');
+        const semanticDuplicate = existingJobs.find(job => normalizeTitle(job.title) === targetNormalized);
+        if (semanticDuplicate) {
+            throw new Error(`ALREADY_EXISTS: This job already exists in the app.`);
+        }
         const newJob = new Job_model_1.default({
             ...jobData,
             applicantsCount: 0,
@@ -51,6 +67,30 @@ class JobsService {
      * Modifies an existing technical requirement.
      */
     async updateJob(id, updatedData) {
+        // Normalization logic
+        const normalizeTitle = (title) => {
+            return title
+                .toLowerCase()
+                .trim()
+                .replace(/\s+/g, ' ')
+                .replace(/s$/, '')
+                .replace(/es$/, '');
+        };
+        if (updatedData.title) {
+            const currentJob = await Job_model_1.default.findById(id);
+            if (!currentJob)
+                return null;
+            const targetNormalized = normalizeTitle(updatedData.title);
+            // Look for duplicates excluding the current job
+            const existingJobs = await Job_model_1.default.find({
+                ownerId: currentJob.ownerId,
+                _id: { $ne: id }
+            }).select('title');
+            const semanticDuplicate = existingJobs.find(job => normalizeTitle(job.title) === targetNormalized);
+            if (semanticDuplicate) {
+                throw new Error(`ALREADY_EXISTS: This job already exists in the app.`);
+            }
+        }
         return await Job_model_1.default.findByIdAndUpdate(id, updatedData, { new: true });
     }
     async deleteJob(id) {

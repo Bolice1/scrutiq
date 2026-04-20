@@ -24,5 +24,9 @@ router.post("/", applicants_controller_1.default.create);
  * Handles administrative PDF/CSV uploads to the registry.
  */
 router.post("/upload", upload_middleware_1.upload.array("dossiers", 20), applicants_controller_1.default.upload);
+// Individual Outreach Dispatch
+router.post("/:id/email", applicants_controller_1.default.sendEmail);
+// Duplicate Management
+router.post("/:id/resolve-duplicate", applicants_controller_1.default.handleResolveDuplicate);
 exports.default = router;
 //# sourceMappingURL=applicants.routes.js.map

@@ -35,14 +35,20 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
 const ApplicantSchema = new mongoose_1.Schema({
+    id: { type: String },
     name: { type: String, required: true },
     role: { type: String, required: true },
     location: { type: String, required: true },
     experience: { type: String, required: true },
     email: { type: String, required: true },
+    gender: { type: String, enum: ["M", "F", "Not stated"], default: "Not stated" },
     technicalProfile: { type: String, required: true },
-    resuméText: { type: String },
-    profileStatus: { type: String, enum: ["Verified", "Pending", "Archived"], default: "Pending" },
+    resumeText: { type: String },
+    resumeUrl: { type: String },
+    profileStatus: { type: String, enum: ["Verified", "Pending", "Archived", "Duplicate"], default: "Pending" },
+    isDuplicate: { type: Boolean, default: false },
+    originalCandidateId: { type: mongoose_1.Schema.Types.ObjectId, ref: "Applicant" },
+    similarityScore: { type: Number, default: 0 },
     ownerId: { type: String, required: true },
 }, { timestamps: true });
 exports.default = mongoose_1.default.model("Applicant", ApplicantSchema);

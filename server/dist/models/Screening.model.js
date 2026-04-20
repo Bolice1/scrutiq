@@ -37,9 +37,12 @@ const mongoose_1 = __importStar(require("mongoose"));
 const ScreeningSchema = new mongoose_1.Schema({
     jobId: { type: String, required: true },
     candidateId: { type: String, required: true },
+    candidateName: { type: String },
+    candidateEmail: { type: String },
+    candidateGender: { type: String, enum: ["M", "F", "Not stated"], default: "Not stated" },
     matchScore: { type: Number, required: true },
     strengths: [{ type: String }],
-    gaps: [{ type: String }],
+    weaknesses: [{ type: String }],
     finalRecommendation: {
         type: String,
         enum: ["Priority Alignment", "Technical Fit", "Potential Fit", "No Alignment"],

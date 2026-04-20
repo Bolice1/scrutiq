@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 declare class StatsController {
     /**
      * Technical System Stats Retrieval:
-     * Returns high-level metrics across the entire recruitment registry.
+     * Returns real-time aggregates across jobs, applicants, and screenings.
      */
     getSystemStats(req: Request, res: Response): Promise<Response<any, Record<string, any>>>;
 }

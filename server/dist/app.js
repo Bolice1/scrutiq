@@ -16,9 +16,14 @@ const applicants_routes_1 = __importDefault(require("./routes/applicants.routes"
 const screening_routes_1 = __importDefault(require("./routes/screening.routes"));
 const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
 const stats_routes_1 = __importDefault(require("./routes/stats.routes"));
+const chat_routes_1 = __importDefault(require("./routes/chat.routes"));
 const app = (0, express_1.default)();
 // Standard Technical Middleware
-app.use((0, helmet_1.default)());
+app.use((0, helmet_1.default)({
+    contentSecurityPolicy: false, // Disabling CSP for development to allow all resource types in iframes
+    crossOriginResourcePolicy: false,
+    crossOriginEmbedderPolicy: false
+}));
 app.use((0, morgan_1.default)("dev"));
 app.use((0, cors_1.default)({
     origin: process.env.CLIENT_URL || "http://localhost:3000",
@@ -27,6 +32,14 @@ app.use((0, cors_1.default)({
 }));
 app.use(express_1.default.json({ limit: "50mb" }));
 app.use(express_1.default.urlencoded({ extended: true, limit: "50mb" }));
+app.use("/uploads", (req, res, next) => {
+    // Force PDF content type for resumes to ensure in-browser previewing for all files (including legacy .0 files)
+    if (req.path.includes("/resumes/")) {
+        res.setHeader("Content-Type", "application/pdf");
+        res.setHeader("Content-Disposition", "inline");
+    }
+    next();
+}, express_1.default.static("uploads"));
 // System Health Check Protocol
 app.get("/health", (req, res) => {
     res.status(200).json({
@@ -40,8 +53,9 @@ app.get("/health", (req, res) => {
 app.use("/api/jobs", jobs_routes_1.default);
 app.use("/api/applicants", applicants_routes_1.default);
 app.use("/api/screening", screening_routes_1.default);
-app.use("/api/auth", auth_routes_1.default);
 app.use("/api/stats", stats_routes_1.default);
+app.use("/api/auth", auth_routes_1.default);
+app.use("/api/chat", chat_routes_1.default);
 // Global Error Handling Protocol
 app.use((err, req, res, next) => {
     console.error("System Fault Detected:", err);

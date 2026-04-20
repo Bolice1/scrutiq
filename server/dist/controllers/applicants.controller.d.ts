@@ -21,6 +21,8 @@ declare class ApplicantsController {
      */
     getById(req: Request, res: Response): Promise<Response<any, Record<string, any>>>;
     delete(req: Request, res: Response): Promise<Response<any, Record<string, any>>>;
+    sendEmail(req: Request, res: Response): Promise<Response<any, Record<string, any>>>;
+    handleResolveDuplicate(req: Request, res: Response): Promise<Response<any, Record<string, any>>>;
 }
 declare const _default: ApplicantsController;
 export default _default;

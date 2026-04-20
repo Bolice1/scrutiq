@@ -41,7 +41,15 @@ const UserSchema = new mongoose_1.Schema({
     passwordHash: { type: String, required: true },
     companyName: { type: String, required: true },
     isVerified: { type: Boolean, default: false },
+    verificationCode: { type: String },
+    resetCode: { type: String },
+    resetCodeExpires: { type: Date },
     role: { type: String, enum: ["admin", "recruiter"], default: "recruiter" },
+    profilePic: { type: String },
+    notifications: {
+        candidateAlerts: { type: Boolean, default: true },
+        screeningCompletions: { type: Boolean, default: true },
+    },
 }, { timestamps: true });
 exports.default = mongoose_1.default.model("User", UserSchema);
 //# sourceMappingURL=User.model.js.map

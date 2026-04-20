@@ -2,42 +2,50 @@ import mongoose from "mongoose";
 declare class ApplicantsService {
     /**
      * Candidate Registry Retrieval:
-     * Returns all profiles currently stored in the candidate registry for an owner.
+     * Optimized with Batch Loading.
      */
     getAllApplicants(ownerId?: string): Promise<any[]>;
     /**
      * Profile Detail Retrieval:
-     * Returns a specific candidate profile by ID.
      */
     getApplicantById(id: string): Promise<(mongoose.Document<unknown, {}, import("../models/Applicant.model").IApplicant, {}, mongoose.DefaultSchemaOptions> & import("../models/Applicant.model").IApplicant & Required<{
         _id: mongoose.Types.ObjectId;
     }> & {
         __v: number;
-    } & {
-        id: string;
     }) | null>;
     /**
      * Candidate Profile Initialization:
-     * Adds a new technical profile to the candidate registry.
      */
     addApplicant(applicantData: any, ownerId: string): Promise<mongoose.Document<unknown, {}, import("../models/Applicant.model").IApplicant, {}, mongoose.DefaultSchemaOptions> & import("../models/Applicant.model").IApplicant & Required<{
         _id: mongoose.Types.ObjectId;
     }> & {
         __v: number;
-    } & {
-        id: string;
     }>;
-    /**
-     * Technical Registry Ingestion:
-     * Parses PDF/CSV files into structured candidate profiles and saves them to the database.
-     */
-    ingestFromFilesWithOwner(files: Express.Multer.File[], ownerId: string, providedEmails?: string | string[]): Promise<any[]>;
+    ingestFromFilesWithOwner(files: Express.Multer.File[], ownerId: string, providedEmails?: string | string[]): Promise<((mongoose.Document<unknown, {}, import("../models/Applicant.model").IApplicant, {}, mongoose.DefaultSchemaOptions> & import("../models/Applicant.model").IApplicant & Required<{
+        _id: mongoose.Types.ObjectId;
+    }> & {
+        __v: number;
+    }) | null)[]>;
+    ingestFromUrls(urls: string[], ownerId: string): Promise<((mongoose.Document<unknown, {}, import("../models/Applicant.model").IApplicant, {}, mongoose.DefaultSchemaOptions> & import("../models/Applicant.model").IApplicant & Required<{
+        _id: mongoose.Types.ObjectId;
+    }> & {
+        __v: number;
+    }) | null)[]>;
+    private prepareFileData;
+    private processTextViaAI;
     deleteApplicant(id: string): Promise<(mongoose.Document<unknown, {}, import("../models/Applicant.model").IApplicant, {}, mongoose.DefaultSchemaOptions> & import("../models/Applicant.model").IApplicant & Required<{
         _id: mongoose.Types.ObjectId;
     }> & {
         __v: number;
-    } & {
-        id: string;
+    }) | null>;
+    /**
+     * Duplicate Resolution Protocol:
+     * Discards one of the conflicting profiles after administrative confirmation.
+     */
+    resolveDuplicate(id: string, action: "keep_original" | "keep_new"): Promise<(mongoose.Document<unknown, {}, import("../models/Applicant.model").IApplicant, {}, mongoose.DefaultSchemaOptions> & import("../models/Applicant.model").IApplicant & Required<{
+        _id: mongoose.Types.ObjectId;
+    }> & {
+        __v: number;
     }) | null>;
 }
 declare const _default: ApplicantsService;

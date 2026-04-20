@@ -35,12 +35,14 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
 const JobSchema = new mongoose_1.Schema({
+    id: { type: String },
     title: { type: String, required: true },
     department: { type: String, required: true },
     location: { type: String, required: true },
     description: { type: String, required: true },
     applicantsCount: { type: Number, default: 0 },
-    status: { type: String, enum: ["Active", "Closed", "Draft"], default: "Active" },
+    status: { type: String, enum: ["Active", "Closed", "Draft", "Archived"], default: "Active" },
+    screeningCriteria: { type: String, default: "" },
     ownerId: { type: String, required: true },
 }, { timestamps: true });
 exports.default = mongoose_1.default.model("Job", JobSchema);

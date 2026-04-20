@@ -10,11 +10,13 @@ declare class JobsService {
      */
     getJobById(id: string): Promise<{
         applicantsCount: number;
+        id: string;
         title: string;
         department: string;
         location: string;
         description: string;
-        status: "Active" | "Closed" | "Draft";
+        status: "Active" | "Closed" | "Draft" | "Archived";
+        screeningCriteria?: string;
         ownerId: string;
         _id: import("mongoose").Types.ObjectId;
         $locals: Record<string, unknown>;
@@ -36,8 +38,6 @@ declare class JobsService {
         _id: import("mongoose").Types.ObjectId;
     }> & {
         __v: number;
-    } & {
-        id: string;
     }>;
     /**
      * Update Judgement Criteria:
@@ -47,15 +47,11 @@ declare class JobsService {
         _id: import("mongoose").Types.ObjectId;
     }> & {
         __v: number;
-    } & {
-        id: string;
     }) | null>;
     deleteJob(id: string): Promise<(import("mongoose").Document<unknown, {}, import("../models/Job.model").IJob, {}, import("mongoose").DefaultSchemaOptions> & import("../models/Job.model").IJob & Required<{
         _id: import("mongoose").Types.ObjectId;
     }> & {
         __v: number;
-    } & {
-        id: string;
     }) | null>;
 }
 declare const _default: JobsService;
