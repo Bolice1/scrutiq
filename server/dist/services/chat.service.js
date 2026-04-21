@@ -70,19 +70,75 @@ const CHAT_CONFIG = {
       TONE: High-authority, human-friendly, precise, and proactive.
     ` }]
     },
-    tools: [{
+    tools: [
+        {
             functionDeclarations: [
                 { name: "list_jobs", description: "Get a list of all active jobs." },
-                { name: "delete_job", description: "Permanently delete a job posting.", parameters: { type: generative_ai_1.SchemaType.OBJECT, properties: { jobId: { type: generative_ai_1.SchemaType.STRING } }, required: ["jobId"] } },
+                {
+                    name: "delete_job",
+                    description: "Permanently delete a job posting.",
+                    parameters: {
+                        type: generative_ai_1.SchemaType.OBJECT,
+                        properties: { jobId: { type: generative_ai_1.SchemaType.STRING } },
+                        required: ["jobId"]
+                    }
+                },
                 { name: "list_applicants", description: "Get a summary list of all applicants." },
-                { name: "get_applicant_details", description: "Fetch the full technical profile and metadata of a specific applicant.", parameters: { type: generative_ai_1.SchemaType.OBJECT, properties: { applicantId: { type: generative_ai_1.SchemaType.STRING } }, required: ["applicantId"] } },
-                { name: "delete_applicant", description: "Permanently remove an applicant from the system.", parameters: { type: generative_ai_1.SchemaType.OBJECT, properties: { applicantId: { type: generative_ai_1.SchemaType.STRING } }, required: ["applicantId"] } },
-                { name: "get_rankings", description: "Get ranked list for a job.", parameters: { type: generative_ai_1.SchemaType.OBJECT, properties: { jobId: { type: generative_ai_1.SchemaType.STRING } }, required: ["jobId"] } },
-                { name: "trigger_screening", description: "Run AI assessment.", parameters: { type: generative_ai_1.SchemaType.OBJECT, properties: { jobId: { type: generative_ai_1.SchemaType.STRING }, candidateIds: { type: generative_ai_1.SchemaType.ARRAY, items: { type: generative_ai_1.SchemaType.STRING } } }, required: ["jobId", "candidateIds"] } },
-                { name: "update_judging_bases", description: "Tighten/Loosen criteria.", parameters: { type: generative_ai_1.SchemaType.OBJECT, properties: { jobId: { type: generative_ai_1.SchemaType.STRING }, instructions: { type: generative_ai_1.SchemaType.STRING } }, required: ["jobId", "instructions"] } },
+                {
+                    name: "get_applicant_details",
+                    description: "Fetch the full technical profile and metadata of a specific applicant.",
+                    parameters: {
+                        type: generative_ai_1.SchemaType.OBJECT,
+                        properties: { applicantId: { type: generative_ai_1.SchemaType.STRING } },
+                        required: ["applicantId"]
+                    }
+                },
+                {
+                    name: "delete_applicant",
+                    description: "Permanently remove an applicant from the system.",
+                    parameters: {
+                        type: generative_ai_1.SchemaType.OBJECT,
+                        properties: { applicantId: { type: generative_ai_1.SchemaType.STRING } },
+                        required: ["applicantId"]
+                    }
+                },
+                {
+                    name: "get_rankings",
+                    description: "Get ranked list for a job.",
+                    parameters: {
+                        type: generative_ai_1.SchemaType.OBJECT,
+                        properties: { jobId: { type: generative_ai_1.SchemaType.STRING } },
+                        required: ["jobId"]
+                    }
+                },
+                {
+                    name: "trigger_screening",
+                    description: "Run AI assessment.",
+                    parameters: {
+                        type: generative_ai_1.SchemaType.OBJECT,
+                        properties: {
+                            jobId: { type: generative_ai_1.SchemaType.STRING },
+                            candidateIds: { type: generative_ai_1.SchemaType.ARRAY, items: { type: generative_ai_1.SchemaType.STRING } }
+                        },
+                        required: ["jobId", "candidateIds"]
+                    }
+                },
+                {
+                    name: "update_judging_bases",
+                    description: "Tighten/Loosen criteria.",
+                    parameters: {
+                        type: generative_ai_1.SchemaType.OBJECT,
+                        properties: {
+                            jobId: { type: generative_ai_1.SchemaType.STRING },
+                            instructions: { type: generative_ai_1.SchemaType.STRING }
+                        },
+                        required: ["jobId", "instructions"]
+                    }
+                },
                 { name: "get_system_overview", description: "Fetch global aggregates: total applicants, jobs, and screening counts." },
             ],
-        }],
+        }
+    ],
     safetySettings: [
         { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
         { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
@@ -154,6 +210,8 @@ class ChatService {
             let iterations = 0;
             while (response.functionCalls() && response.functionCalls().length > 0 && iterations < 3) {
                 iterations++;
+                if (!response.candidates || response.candidates.length === 0)
+                    break;
                 const modelTurn = response.candidates[0].content;
                 contents.push(modelTurn);
                 const calls = response.functionCalls();
