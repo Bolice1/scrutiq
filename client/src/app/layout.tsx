@@ -13,6 +13,9 @@ const jakarta = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "Scrutiq | Advanced Talent Analysis Portal",
   description: "Modern administrative portal for technical talent assessment and high-fidelity screening.",
+  verification: {
+    google: "aK58z5-6SzDQ9MhUsvFhzu8o-9ZHgTi4sTw5S1PUhY8",
+  },
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
